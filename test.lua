@@ -6,7 +6,9 @@ local s = assert(marshal.encode(a))
 --print(string.format("%q", s))
 local t = marshal.decode(s)
 --print(t)
-table.foreach(t, print)
+for k,v in pairs(t) do
+	print(v)
+end
 assert(t[1] == "a")
 assert(t[2] == "b")
 assert(t[3] == "c")
@@ -116,12 +118,18 @@ local t = marshal.decode(s)
 assert(type(t[1]) == "userdata")
 
 local t1 = { 1, 'a', b = 'b' }
-table.foreach(t1, print)
+for k,v in pairs(t1) do
+	print(v)
+end
 local t2 = marshal.clone(t1)
 print('---')
-table.foreach(t1, print)
+for k,v in pairs(t1) do
+	print(v)
+end
 print('---')
-table.foreach(t2, print)
+for k,v in pairs(t2) do
+	print(v)
+end
 assert(t1[1] == t2[1])
 assert(t1[2] == t2[2])
 assert(t1.b == t2.b)

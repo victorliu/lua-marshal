@@ -1,15 +1,15 @@
 # makefile for marshal library for Lua
 
 # change these to reflect your Lua installation
-LUA= /usr/local/bin/lua
-LUAINC= /usr/local/include
+LUA= lua
+LUAINC= /usr/include/lua5.2
 LUALIB= $(LUA)
 LUABIN= /usr/local/bin
 
 WARN= -ansi -pedantic -Wall
 INCS= -I$(LUAINC)
 
-CFLAGS=-O3
+CFLAGS=-O3 $(INCS)
 LDFLAGS=
 
 OS_NAME=$(shell uname -s)
@@ -30,7 +30,7 @@ TEST= test.lua
 all:	test
 
 test:	$T
-	$(LUABIN)/lua $(TEST)
+	$(LUA) $(TEST)
 
 o:	$(MYLIB).o
 
