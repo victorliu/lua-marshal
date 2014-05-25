@@ -103,7 +103,7 @@ assert(t[2] == t[3])
 assert(type(t[1]()) == "function")
 assert(type(t[4]) == "function")
 assert(t[1]() == t[4])
-
+--[[
 local u = newproxy()
 debug.setmetatable(u, {
    __persist = function()
@@ -116,7 +116,7 @@ debug.setmetatable(u, {
 local s = marshal.encode{u}
 local t = marshal.decode(s)
 assert(type(t[1]) == "userdata")
-
+]]
 local t1 = { 1, 'a', b = 'b' }
 for k,v in pairs(t1) do
 	print(v)

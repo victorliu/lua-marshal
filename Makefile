@@ -1,48 +1,13 @@
-# makefile for marshal library for Lua
+LUA_INC = -I/usr/include/lua5.2
 
-# change these to reflect your Lua installation
-LUA= lua
-LUAINC= /usr/include/lua5.2
-LUALIB= $(LUA)
-LUABIN= /usr/local/bin
+CFLAGS = -Wall -O0 -ggdb
 
-WARN= -ansi -pedantic -Wall
-INCS= -I$(LUAINC)
-
-CFLAGS=-O3 $(INCS)
-LDFLAGS=
-
-OS_NAME=$(shell uname -s)
-MH_NAME=$(shell uname -m)
-
-ifeq ($(OS_NAME), Darwin)
-CFLAGS+=-bundle -undefined dynamic_lookup
-else ifeq ($(OS_NAME), Linux)
-CFLAGS+=-shared -fPIC
-endif
-
-MYNAME= marshal
-MYLIB= l$(MYNAME)
-T= $(MYNAME).so
-OBJS= $(MYLIB).o
-TEST= test.lua
-
-all:	test
-
-test:	$T
-	$(LUA) $(TEST)
-
-o:	$(MYLIB).o
-
-so:	$T
-
-$T:	$(OBJS)
-	$(CC) $(CFLAGS) $(WARN) -o $@ $(OBJS)
-
+all: marshal.so	
+	lua simple_test.lua
+	
+lmarshal.o: lmarshal.c
+	gcc -c $(CFLAGS) $(LUA_INC) -fpic -Wall -I. $< -o $@
+marshal.so: lmarshal.o
+	gcc $(CFLAGS) -shared -fpic -Wall $(LUA_INCLUDE) -o $@ $^
 clean:
-	rm -f $(OBJS) $T
-
-doc:
-	@echo "$(MYNAME) library:"
-	@fgrep '/**' $(MYLIB).c | cut -f2 -d/ | tr -d '*' | sort | column
-
+	rm -f *.o *.so
